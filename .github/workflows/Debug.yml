@@ -1,0 +1,24 @@
+name: Inspect ARC File
+
+on:
+  workflow_dispatch:  # manual trigger
+
+jobs:
+  inspect-arc:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Print ARC file info
+        run: |
+          ARC_FILE="wwwlib-rvl.arc"
+          if [ ! -f "$ARC_FILE" ]; then
+            echo "ARC file not found!"
+            exit 1
+          fi
+          echo "File size: $(stat -c%s "$ARC_FILE") bytes"
+          echo "First 64 bytes in hex:"
+          head -c 64 "$ARC_FILE" | xxd
+          echo "Last 64 bytes in hex:"
+          tail -c 64 "$ARC_FILE" | xxd
