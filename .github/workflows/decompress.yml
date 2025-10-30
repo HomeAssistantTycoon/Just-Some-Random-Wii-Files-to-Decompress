@@ -1,29 +1,26 @@
-name: Decompress LZ7 File (Python)
+name: LZ10 Decompressor
 
 on:
-  workflow_dispatch:  # allows manual triggering in GitHub Actions
+  workflow_dispatch:  # Allows manual trigger
 
 jobs:
   decompress:
-    name: Run Python LZ7 Decompressor
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+    - name: Checkout repository
+      uses: actions/checkout@v3
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.x'
 
-      - name: Run LZ7 Decompressor
-        run: |
-          # Replace these names if yours differ
-          python LZ77Extractor.py wwwlib-rvl.lz7 wwwlib-rvl.arc
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        # Add any dependencies here if needed
 
-      - name: Upload Decompressed File
-        uses: actions/upload-artifact@v4
-        with:
-          name: decompressed-arc
-          path: wwwlib-rvl.arc
+    - name: Run LZ10 extractor
+      run: |
+        python lz10_extractor.py wwwlib-rvl.lz7 wwwlib-rvl.arc
