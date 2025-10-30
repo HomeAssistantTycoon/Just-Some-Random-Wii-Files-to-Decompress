@@ -1,7 +1,7 @@
-name: LZ10/LZ11 Decompress
+name: Decompress LZ7 to ARC
 
 on:
-  workflow_dispatch: # allows manual triggering
+  workflow_dispatch:
 
 jobs:
   decompress:
@@ -14,13 +14,17 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: "3.x"
+          python-version: "3.11"
 
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
+          # Add any other required Python packages here if needed
 
-      - name: Run LZ10/LZ11 Decompressor
+      - name: Run decompression
         run: |
-          # Replace this file name with your actual script name if different
-          python lz10_extractor.py wwwlib-rvl.lz7
+          python lz10_to_arc.py wwwlib-rvl.lz7 wwwlib-rvl.arc
+
+      - name: Show resulting files
+        run: |
+          ls -lh
