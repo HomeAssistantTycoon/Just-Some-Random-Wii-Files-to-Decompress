@@ -1,32 +1,28 @@
-name: Decompress LZ7/LZ10 and Extract ARC
+name: Extract ARC
 
 on:
-  workflow_dispatch: # manual trigger
+  workflow_dispatch:
 
 jobs:
-  decompress:
+  extract_arc:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout Repo
+      - name: Checkout repo
         uses: actions/checkout@v4
 
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
-          python-version: 3.11
+          python-version: 3.12
 
-      - name: Install requirements
+      - name: Install dependencies
         run: |
-          pip install --upgrade pip
-
-      - name: Decompress LZ10/LZ7
-        run: |
-          python lz10_extractor.py "wwwlib-rvl.lz7"  # produces wwwlib-rvl.arc
+          python -m pip install --upgrade pip
 
       - name: Extract ARC
         run: |
-          python extract_arc.py "wwwlib-rvl.arc"
+          mkdir -p output
+          python arc_extractor.py "wwwlib-rvl.arc" "output"
 
       - name: Upload extracted files
         uses: actions/upload-artifact@v4
