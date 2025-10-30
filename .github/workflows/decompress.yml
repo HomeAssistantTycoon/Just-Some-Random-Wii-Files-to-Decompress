@@ -1,12 +1,7 @@
-name: Decompress LZ10 File
+name: LZ10/LZ11 Decompress
 
 on:
-  workflow_dispatch:
-    inputs:
-      file:
-        description: 'Name of the LZ10 file in the repo'
-        required: true
-        default: 'wwwlib-rvl.lz7'
+  workflow_dispatch: # allows manual triggering
 
 jobs:
   decompress:
@@ -19,14 +14,13 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.x'
+          python-version: "3.x"
 
-      - name: List files for debugging
-        run: ls -R
-
-      - name: Run LZ10 extractor
+      - name: Install dependencies
         run: |
-          python lz10_extractor.py "${{ github.event.inputs.file }}"
+          python -m pip install --upgrade pip
 
-      - name: Show resulting files
-        run: ls -lh
+      - name: Run LZ10/LZ11 Decompressor
+        run: |
+          # Replace this file name with your actual script name if different
+          python lz10_extractor.py wwwlib-rvl.lz7
