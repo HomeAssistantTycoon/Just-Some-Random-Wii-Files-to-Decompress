@@ -1,32 +1,33 @@
-name: Decompress LZ10 file
+name: Decompress LZ7 File
 
 on:
-  push:
-    paths:
-      - '**.lz10'
-      - '**.lz7'
+  workflow_dispatch:  # allows manual runs from the Actions tab
 
 jobs:
   decompress:
+    name: Run LZ7 Decompressor
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - name: Set up Go
+        uses: actions/setup-go@v5
         with:
-          python-version: '3.x'
+          go-version: '1.22'
 
-      - name: Run LZ10 decompressor
+      - name: Build LZ7 Decompressor
         run: |
-          python3 lz10_extractor.py *.lz10 || true
-          python3 lz10_extractor.py *.lz7 || true
+          go build -o lz7extract main.go
 
-      - name: Upload decompressed files
+      - name: Run Decompressor
+        run: |
+          # Change filenames here if needed
+          ./lz7extract wwwlib-rvl.lz7 wwwlib-rvl.arc
+
+      - name: Upload Output File
         uses: actions/upload-artifact@v4
         with:
-          name: decompressed-output
-          path: |
-            *.decompressed
+          name: decompressed-arc
+          path: wwwlib-rvl.arc
